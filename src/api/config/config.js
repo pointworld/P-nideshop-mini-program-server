@@ -12,7 +12,7 @@ module.exports = {
     'search',
     'region'
   ],
-
+ 
   // 可以公开访问的Action
   publicAction: [
     // 格式为： controller+action
