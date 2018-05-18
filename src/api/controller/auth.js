@@ -1,12 +1,12 @@
-const Base = require('./base.js');
-const rp = require('request-promise');
+const Base = require('./base.js')
+const rp = require('request-promise')
 
 module.exports = class extends Base {
   async loginByWeixinAction() {
-    const code = this.post('code');
-    const fullUserInfo = this.post('userInfo');
-    const userInfo = fullUserInfo.userInfo;
-    const clientIp = ''; // 暂时不记录 ip
+    const code = this.post('code')
+    const fullUserInfo = this.post('userInfo')
+    const userInfo = fullUserInfo.userInfo
+    const clientIp = '' // 暂时不记录 ip
 
     // 获取openid
     const options = {
@@ -18,30 +18,39 @@ module.exports = class extends Base {
         secret: think.config('weixin.secret'),
         appid: think.config('weixin.appid')
       }
-    };
+    }
 
-    let sessionData = await rp(options);
-    sessionData = JSON.parse(sessionData);
+    let sessionData = await rp(options)
+    sessionData = JSON.parse(sessionData)
+    console.log('src/api/controller/auth.js - sessionData: ')
+    console.log(sessionData)
+    // {
+    //   session_key: 'DtE4UmazwY8QktIPK/4sMA==',
+    //   openid: 'ozPbS5Lj_oM84rWJHIYWn5xxKZdg'
+    // }
     if (!sessionData.openid) {
-      return this.fail('登录失败');
+      return this.fail('登录失败')
     }
 
     // 验证用户信息完整性
-    const crypto = require('crypto');
-    const sha1 = crypto.createHash('sha1').update(fullUserInfo.rawData + sessionData.session_key).digest('hex');
+    const crypto = require('crypto')
+    const sha1 = crypto.createHash('sha1').update(fullUserInfo.rawData + sessionData.session_key).digest('hex')
+    console.log('src/api/controller/auth.js - sha1: ')
+    console.log(sha1)
     if (fullUserInfo.signature !== sha1) {
-      return this.fail('登录失败');
+      return this.fail('登录失败')
     }
 
     // 解释用户数据
-    const WeixinSerivce = this.service('weixin', 'api');
-    const weixinUserInfo = await WeixinSerivce.decryptUserInfoData(sessionData.session_key, fullUserInfo.encryptedData, fullUserInfo.iv);
+    const WeixinSerivce = this.service('weixin', 'api')
+    const weixinUserInfo = await WeixinSerivce.decryptUserInfoData(sessionData.session_key, fullUserInfo.encryptedData, fullUserInfo.iv)
     if (think.isEmpty(weixinUserInfo)) {
-      return this.fail('登录失败');
+      return this.fail('登录失败')
     }
 
     // 根据openid查找用户是否已经注册
-    let userId = await this.model('user').where({ weixin_openid: sessionData.openid }).getField('id', true);
+    let userId = await this.model('user').where({ weixin_openid: sessionData.openid }).getField('id', true)
+    console.log('userId: ' + userId) // 14
     if (think.isEmpty(userId)) {
       // 注册
       userId = await this.model('user').add({
@@ -56,31 +65,31 @@ module.exports = class extends Base {
         avatar: userInfo.avatarUrl || '',
         gender: userInfo.gender || 1, // 性别 0：未知、1：男、2：女
         nickname: userInfo.nickName
-      });
+      })
     }
 
-    sessionData.user_id = userId;
+    sessionData.user_id = userId
 
     // 查询用户信息
-    const newUserInfo = await this.model('user').field(['id', 'username', 'nickname', 'gender', 'avatar', 'birthday']).where({ id: userId }).find();
+    const newUserInfo = await this.model('user').field(['id', 'username', 'nickname', 'gender', 'avatar', 'birthday']).where({ id: userId }).find()
 
     // 更新登录信息
     userId = await this.model('user').where({ id: userId }).update({
       last_login_time: parseInt(new Date().getTime() / 1000),
       last_login_ip: clientIp
-    });
+    })
 
-    const TokenSerivce = this.service('token', 'api');
-    const sessionKey = await TokenSerivce.create(sessionData);
+    const TokenSerivce = this.service('token', 'api')
+    const sessionKey = await TokenSerivce.create(sessionData)
 
     if (think.isEmpty(newUserInfo) || think.isEmpty(sessionKey)) {
-      return this.fail('登录失败');
+      return this.fail('登录失败')
     }
 
-    return this.success({ token: sessionKey, userInfo: newUserInfo });
+    return this.success({ token: sessionKey, userInfo: newUserInfo })
   }
 
   async logoutAction() {
-    return this.success();
+    return this.success()
   }
-};
+}

@@ -12,7 +12,7 @@
   |--- README.md
   |--- src
   | |--- admin   ==============================================
-  | | |--- config      
+  | | |--- config      //nothing//
   | | | |--- config.js
   | | |--- controller  
   | | | |--- auth.js   
@@ -45,7 +45,7 @@
   | | | |--- config.js
   | | |--- controller  //控制器目录
   | | | |--- address.js 
-  | | | |--- auth.js   
+  | | | |--- auth.js       //登录授权
   | | | |--- base.js   
   | | | |--- brand.js   
   | | | |--- cart.js   
@@ -61,7 +61,7 @@
   | | | |--- search.js  
   | | | |--- topic.js  
   | | | |--- user.js    
-  | | |--- logic   
+  | | |--- logic       //nothing//
   | | | |--- address.js 
   | | | |--- auth.js   
   | | | |--- base.js   
@@ -94,7 +94,7 @@
   | | | |--- token.js    
   | | | |--- weixin.js    
   | |--- common  ===============================================================
-  | | |--- bootstrap  ------------------------------ 启动自动执行目录
+  | | |--- bootstrap  ------------------------------ 启动自动执行目录: nothing
   | | | |--- master.js    //Master 进程下自动执行
   | | | |--- worker.js    //Worker 进程下自动执行
   | | |--- config     ------------------------------ 配置文件
@@ -104,5 +104,5 @@
   | | | |--- database.js             //数据库配置
   | | | |--- extend.js      
   | | | |--- middleware.js           //集中处理中间件
-  | | | |--- router.js               //自定义路由配置文件
+  | | | |--- router.js               //自定义路由配置文件: nothing//
 ```

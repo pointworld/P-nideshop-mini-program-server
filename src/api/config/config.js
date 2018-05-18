@@ -26,4 +26,4 @@ module.exports = {
     'cart/goodscount',
     'pay/notify'
   ]
-};
+}
