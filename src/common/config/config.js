@@ -11,7 +11,8 @@ module.exports = {
     secret: '4fcf16b33dcef420bd3ccd95afe785d8', // 小程序密钥
     mch_id: '1499922042', // 商户帐号ID
     partner_key: 'asjdfnwefjnwksegnasegjsangejgeww', // 微信支付密钥
-    notify_url: 'http://127.0.0.1:8360/api/pay/notify' // 微信异步通知，例：https://runfa.sciclean.cn/api/pay/notify
+    notify_url: 'https://runfa.sciclean.cn/api/pay/notify' // 微信异步通知，例：https://runfa.sciclean.cn/api/pay/notify
+    // notify_url: 'http://127.0.0.1:8360/api/pay/notify' // 微信异步通知，例：http://127.0.0.1:8360/api/pay/notify
   },
   express: {
     // 快递物流信息查询使用的是快递鸟接口，申请地址：http://www.kdniao.com/
