@@ -88,6 +88,8 @@ module.exports = class extends Base {
     if (think.isEmpty(checkedAddress)) {
       return this.fail('请选择收货地址')
     }
+
+    // 邮费
     const freightPrice = 0.00
 
     // 获取要购买的商品

@@ -31,7 +31,8 @@ module.exports = class extends Base {
         body: '订单编号：' + orderInfo.order_sn,
         out_trade_no: orderInfo.order_sn,
         total_fee: parseInt(orderInfo.actual_price * 100),
-        spbill_create_ip: ''
+        spbill_create_ip: '',
+
       })
       return this.success(returnParams)
     } catch (err) {
@@ -40,6 +41,9 @@ module.exports = class extends Base {
   }
 
   async notifyAction() {
+
+    console.log('5555555555555555555555555555555555555555544444')
+
     const WeixinSerivce = this.service('weixin', 'api')
     const result = WeixinSerivce.payNotify(this.post('xml'))
     if (!result) {
@@ -53,6 +57,7 @@ module.exports = class extends Base {
     }
 
     if (orderModel.updatePayStatus(orderInfo.id, 2)) {
+
     } else {
       return `<xml><return_code><![CDATA[FAIL]]></return_code><return_msg><![CDATA[订单不存在]]></return_msg></xml>`
     }

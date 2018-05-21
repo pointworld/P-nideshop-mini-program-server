@@ -1,4 +1,4 @@
-const _ = require('lodash');
+const _ = require('lodash')
 
 module.exports = class extends think.Model {
   /**
@@ -6,8 +6,8 @@ module.exports = class extends think.Model {
    * @returns {string}
    */
   generateOrderNumber() {
-    const date = new Date();
-    return date.getFullYear() + _.padStart(date.getMonth(), 2, '0') + _.padStart(date.getDay(), 2, '0') + _.padStart(date.getHours(), 2, '0') + _.padStart(date.getMinutes(), 2, '0') + _.padStart(date.getSeconds(), 2, '0') + _.random(100000, 999999);
+    const date = new Date()
+    return date.getFullYear() + _.padStart(date.getMonth(), 2, '0') + _.padStart(date.getDay(), 2, '0') + _.padStart(date.getHours(), 2, '0') + _.padStart(date.getMinutes(), 2, '0') + _.padStart(date.getSeconds(), 2, '0') + _.random(100000, 999999)
   }
 
   /**
@@ -25,9 +25,9 @@ module.exports = class extends think.Model {
       confirm: false, // 完成订单操作
       return: false, // 退换货操作
       buy: false // 再次购买
-    };
+    }
 
-    const orderInfo = await this.where({id: orderId}).find();
+    const orderInfo = await this.where({id: orderId}).find()
 
     // 订单流程：下单成功－》支付订单－》发货－》收货－》评论
     // 订单相关状态字段设计，采用单个字段表示全部的订单状态
@@ -37,53 +37,53 @@ module.exports = class extends think.Model {
     // 4xx表示订单退换货相关的状态,401没有发货，退款402,已收货，退款退货
     // 如果订单已经取消或是已完成，则可删除和再次购买
     if (orderInfo.order_status === 101) {
-      handleOption.delete = true;
-      handleOption.buy = true;
+      handleOption.delete = true
+      handleOption.buy = true
     }
 
     // 如果订单没有被取消，且没有支付，则可支付，可取消
     if (orderInfo.order_status === 0) {
-      handleOption.cancel = true;
-      handleOption.pay = true;
+      handleOption.cancel = true
+      handleOption.pay = true
     }
 
     // 如果订单已付款，没有发货，则可退款操作
     if (orderInfo.order_status === 201) {
-      handleOption.return = true;
+      handleOption.return = true
     }
 
     // 如果订单已经发货，没有收货，则可收货操作和退款、退货操作
     if (orderInfo.order_status === 300) {
-      handleOption.cancel = true;
-      handleOption.pay = true;
-      handleOption.return = true;
+      handleOption.cancel = true
+      handleOption.pay = true
+      handleOption.return = true
     }
 
     // 如果订单已经支付，且已经收货，则可完成交易、评论和再次购买
     if (orderInfo.order_status === 301) {
-      handleOption.delete = true;
-      handleOption.comment = true;
-      handleOption.buy = true;
+      handleOption.delete = true
+      handleOption.comment = true
+      handleOption.buy = true
     }
 
-    return handleOption;
+    return handleOption
   }
 
   // modified at 20180521 by point
   async getOrderStatusText(orderId) {
-    const orderInfo = await this.where({id: orderId}).find();
-    let statusText = '已付款';
-    // let statusText = '未付款';
+    const orderInfo = await this.where({id: orderId}).find()
+    let statusText = '未付款'
+    // let statusText = '未付款'
     switch (orderInfo.order_status) {
       case 0:
-        statusText = '未付款';
-        break;
-      case 1:
-        statusText = '已付款';
-        break;
+        statusText = '未付款'
+      //   break
+      // case 1:
+      //   statusText = '已付款'
+      //   break
     }
 
-    return statusText;
+    return statusText
   }
 
   /**
@@ -93,7 +93,10 @@ module.exports = class extends think.Model {
    * @returns {Promise.<boolean>}
    */
   async updatePayStatus(orderId, payStatus = 0) {
-    return this.where({id: orderId}).limit(1).update({pay_status: parseInt(payStatus)});
+    console.log('orderId===========================')
+    console.log(orderId)
+    console.log(payStatus)
+    return this.where({id: orderId}).limit(1).update({pay_status: parseInt(payStatus)})
   }
 
   /**
@@ -103,8 +106,8 @@ module.exports = class extends think.Model {
    */
   async getOrderByOrderSn(orderSn) {
     if (think.isEmpty(orderSn)) {
-      return {};
+      return {}
     }
-    return this.where({order_sn: orderSn}).find();
+    return this.where({order_sn: orderSn}).find()
   }
-};
+}
