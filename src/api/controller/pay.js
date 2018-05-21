@@ -42,8 +42,6 @@ module.exports = class extends Base {
 
   async notifyAction() {
 
-    console.log('5555555555555555555555555555555555555555544444')
-
     const WeixinSerivce = this.service('weixin', 'api')
     const result = WeixinSerivce.payNotify(this.post('xml'))
     if (!result) {
