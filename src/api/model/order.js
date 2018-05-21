@@ -78,8 +78,13 @@ module.exports = class extends think.Model {
       case 0:
         statusText = '未付款'
         break
+    }
+    switch (orderInfo.pay_status) {
+      case 0:
+        statusText = '未付款'
+        break
       case 2:
-        statusText = '付款成功'
+        statusText = '已付款'
         break
     }
 
