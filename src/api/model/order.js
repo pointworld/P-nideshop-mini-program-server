@@ -98,9 +98,6 @@ module.exports = class extends think.Model {
    * @returns {Promise.<boolean>}
    */
   async updatePayStatus(orderId, payStatus = 0) {
-    console.log('orderId===========================')
-    console.log(orderId)
-    console.log(payStatus)
     return this.where({id: orderId}).limit(1).update({pay_status: parseInt(payStatus)})
   }
 

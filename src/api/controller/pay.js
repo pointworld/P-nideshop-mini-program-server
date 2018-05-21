@@ -51,13 +51,13 @@ module.exports = class extends Base {
     const orderModel = this.model('order')
     const orderInfo = await orderModel.getOrderByOrderSn(result.out_trade_no)
     if (think.isEmpty(orderInfo)) {
-      return `<xml><return_code><![CDATA[FAIL]]></return_code><return_msg><![CDATA[订单不存在]]></return_msg></xml>`
+      return `<xml><return_code><![CDATA[FAIL]]></return_code><return_msg><![CDATA[订单不存在1]]></return_msg></xml>`
     }
 
     if (orderModel.updatePayStatus(orderInfo.id, 2)) {
-
+    //
     } else {
-      return `<xml><return_code><![CDATA[FAIL]]></return_code><return_msg><![CDATA[订单不存在]]></return_msg></xml>`
+      return `<xml><return_code><![CDATA[FAIL]]></return_code><return_msg><![CDATA[订单不存在2]]></return_msg></xml>`
     }
 
     return `<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>`
