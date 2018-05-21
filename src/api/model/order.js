@@ -72,7 +72,8 @@ module.exports = class extends think.Model {
   // modified at 20180521 by point
   async getOrderStatusText(orderId) {
     const orderInfo = await this.where({id: orderId}).find();
-    let statusText = '未付款';
+    let statusText = '已付款';
+    // let statusText = '未付款';
     switch (orderInfo.order_status) {
       case 0:
         statusText = '未付款';
