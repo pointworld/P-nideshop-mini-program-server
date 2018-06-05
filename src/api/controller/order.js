@@ -20,6 +20,9 @@ module.exports = class extends Base {
       // 订单状态的处理
       item.order_status_text = await this.model('order').getOrderStatusText(item.id)
 
+      console.log('controller/order.js - item.order_status_text: ')
+      console.log(item.order_status_text)
+
       // 可操作的选项
       item.handleOption = await this.model('order').getOrderHandleOption(item.id)
 
@@ -27,8 +30,8 @@ module.exports = class extends Base {
     }
     orderList.data = newOrderList
 
-    console.log('controller/order.js - orderList: ')
-    console.log(orderList)
+    // console.log('controller/order.js - orderList: ')
+    // console.log(orderList)
 
     return this.success(orderList)
   }
@@ -38,7 +41,7 @@ module.exports = class extends Base {
 
     const orderInfo = await this.model('order').where({ user_id: think.userId, id: orderId }).find()
 
-    console.log(orderInfo)
+    // console.log(orderInfo)
 
     if (think.isEmpty(orderInfo)) {
       return this.fail('订单不存在')
@@ -69,6 +72,9 @@ module.exports = class extends Base {
 
     // 订单可操作的选择,删除，支付，收货，评论，退换货
     const handleOption = await this.model('order').getOrderHandleOption(orderId)
+
+    console.log('//api/controller/order.js - detailAction - orderInfo.order_status_text: ')
+    console.log(orderInfo.order_status_text)
 
     return this.success({
       orderInfo: orderInfo,

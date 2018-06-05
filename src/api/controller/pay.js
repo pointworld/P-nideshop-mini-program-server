@@ -55,7 +55,7 @@ module.exports = class extends Base {
     }
 
     if (orderModel.updatePayStatus(orderInfo.id, 2)) {
-    //
+      // 更改订单状态文本
     } else {
       return `<xml><return_code><![CDATA[FAIL]]></return_code><return_msg><![CDATA[订单不存在2]]></return_msg></xml>`
     }

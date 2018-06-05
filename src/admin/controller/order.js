@@ -16,6 +16,10 @@ module.exports = class extends Base {
     const newList = [];
     for (const item of data.data) {
       item.order_status_text = await this.model('order').getOrderStatusText(item.id);
+
+      // console.log('src/admin/controller/order.js - item.order_status_text:')
+      // console.log(item.order_status_text)
+
       newList.push(item);
     }
     data.data = newList;
